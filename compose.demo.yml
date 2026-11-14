@@ -1,0 +1,17 @@
+services:
+  campus:
+    build:
+      context: .
+      dockerfile: Dockerfile.public
+    ports:
+      - "127.0.0.1:8080:8080"
+    env_file: .env
+    environment:
+      DATABASE_URL: sqlite:////app/data/demo.sqlite3
+      KNOWLEDGE_VECTOR_ENABLED: "false"
+      TOOL_QUEUE_ENABLED: "false"
+      ALERT_EMAIL_DELIVERY_MODE: log
+    volumes:
+      - campus-demo-data:/app/data
+volumes:
+  campus-demo-data:
