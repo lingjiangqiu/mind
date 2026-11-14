@@ -40,9 +40,9 @@ macOS / Linux 使用 `python3 -m venv .venv`、`source .venv/bin/activate`、`cp
 
 ### 使用真实 AI
 
-在本地 `.env` 中设置 `AI_PROVIDER=deepseek`、`DEEPSEEK_API_KEY`、`DEEPSEEK_BASE_URL` 和 `DEEPSEEK_MODEL`，然后重启服务。也支持 `openai`（兼容接口）与 `ollama`。密钥只在后端，不能放进前端或提交到 Git。
+在本地 `.env` 中设置 `AI_PROVIDER=openai`、`OPENAI_API_KEY`、`OPENAI_BASE_URL=https://ca.memofun.net/v1`、`OPENAI_MODEL=gpt-6.1-sol`、`OPENAI_API_STYLE=responses` 和 `OPENAI_REASONING_EFFORT=low`，然后重启服务。密钥只在后端，不能放进前端或提交到 Git。DeepSeek 与 Ollama 适配仍保留，默认 mock 便于无密钥运行。
 
-示例默认保留 `deepseek-chat` 兼容配置；模型可用名称以你的 API 供应商为准。服务端缺少密钥、超时、返回空内容/截断内容或校验失败时会兜底，页面会注明；“已配置”只表示配置存在，本轮是否成功以处理过程中的来源为准。
+当前接入第三方 OpenAI 兼容网关，模型接口名为 `gpt-6.1-sol`；这不证明具体底层权重或官方直连身份。Responses 请求显式传入产品提示词、完整文本历史、`store=false`、low 推理档，不启用 priority 付费档。第三方是否保留数据以其政策为准。服务端缺少密钥、超时、返回空内容/截断内容或校验失败时会兜底，页面会注明；“已配置”只表示配置存在，本轮是否成功以处理过程中的来源为准。
 
 ### Docker
 
@@ -59,7 +59,7 @@ python -m unittest discover -s tests
 python -m app.harness.runner
 ```
 
-测试使用 mock、临时 SQLite 和邮件 log，不调用付费模型、不联系真实人员。2026-11-11 本地检查：78 项单元测试、6 组 harness 通过。原 12 条安全基线和新增 24 条哲学规则检查使用合成固定用例。检索 60 条数据在关闭向量时 Recall@4=0.9667，仅代表该词面检索数据集。不能据此宣称心理疗效、真实用户满意度或实际危机识别率。
+测试使用 mock、临时 SQLite 和邮件 log，不调用付费模型、不联系真实人员。2026-11-14 本地检查：88 项单元测试、6 组 harness 通过。原 12 条安全基线和新增 24 条哲学规则检查使用合成固定用例。检索 60 条数据在关闭向量时 Recall@4=0.9667，仅代表该词面检索数据集。不能据此宣称心理疗效、真实用户满意度或实际危机识别率。
 
 本次线上合成冒烟中，学业首轮与追问采用模型输出，高风险走安全路径；记录见 [live-smoke-2026-11-11.json](docs/live-smoke-2026-11-11.json)。浏览器关系示例曾触发预设兜底，说明真实模型并非每轮都会通过约束。真实模型的可用性、延迟、兜底率和连续追问质量需要独立评测；不要把 mock 通过率当成模型质量。
 

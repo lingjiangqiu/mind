@@ -4,21 +4,21 @@
 
 本次交付不需要 Git 命令。解压“校园心理助手_GitHub网页上传包_2026-11-14.zip”，只上传其中“01_需要上传”内的两个批次。
 
-## 第一批：app（68 个文件）
+## 第一批：app（69 个文件）
 
 1. 在仓库根页面选择 **Add file → Upload files**。
 2. 打开“01_需要上传/第1批_打开后上传里面的内容”，把里面的 **app 文件夹**拖进上传框。不要把“第1批”文件夹本身拖进去。
 3. 等待上传列表加载完成。路径应以 `app/` 开头，例如 `app/main.py`。
 4. 提交说明填写 `Upload application source`，提交到 `main`。
 
-## 第二批：配置、文档、技能和测试（36 个文件）
+## 第二批：配置、文档、技能和测试（37 个文件）
 
 1. 回到仓库根页面，再选择 **Add file → Upload files**。
 2. 打开“01_需要上传/第2批_打开后上传里面的内容”，按 Ctrl+A 全选里面的文件和文件夹，一起拖进上传框。不要把“第2批”文件夹本身拖进去。
 3. 上传路径应直接是 `README.md`、`skills/...`、`tests/...`、`docs/...`、`.github/workflows/test.yml` 等。以点开头的 `.env.example`、`.gitignore`、`.dockerignore`、`.github` 也需要上传。
 4. 提交说明填写 `Upload project configuration docs skills and tests`，提交到 `main`。
 
-GitHub 网页每次最多上传 100 个文件、每个文件不超过 25 MiB，因此完整源码按 68 + 36 分成两次。官方说明：https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository
+GitHub 网页每次最多上传 100 个文件、每个文件不超过 25 MiB，因此完整源码按 69 + 37 分成两次。官方说明：https://docs.github.com/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository
 
 ## 上传完成后检查
 
