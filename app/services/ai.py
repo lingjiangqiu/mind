@@ -165,6 +165,10 @@ class AiClient:
                         yield token
 
     def _openai(self, messages: list[AiMessage], stream: bool, max_tokens: int | None = None, json_mode: bool = False) -> str:
+        if self.settings.ai_provider.lower() == "openai" and self.settings.openai_api_style == "responses":
+            from app.services.compatible import ResponsesClient
+            return ResponsesClient(self.settings).complete(
+                [m.model_dump() for m in messages], max_tokens=max_tokens or self.settings.ai_max_tokens, json_mode=json_mode)
         base, key, model, timeout = self._compatible_config()
         if not key.strip():
             raise RuntimeError("AI provider is not configured")
@@ -193,6 +197,12 @@ class AiClient:
         return self.settings.openai_base_url, self.settings.openai_api_key, self.settings.openai_model, 60.0
 
     async def _openai_stream(self, messages: list[AiMessage]):
+        if self.settings.ai_provider.lower() == "openai" and self.settings.openai_api_style == "responses":
+            from app.services.compatible import ResponsesClient
+            async for token in ResponsesClient(self.settings).stream(
+                [m.model_dump() for m in messages], max_tokens=self.settings.ai_max_tokens):
+                yield token
+            return
         base, key, model, timeout = self._compatible_config()
         if not key.strip():
             raise RuntimeError("AI provider is not configured")

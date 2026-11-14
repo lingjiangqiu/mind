@@ -5,6 +5,7 @@ from typing import Any
 import httpx
 
 from app.core.config import Settings
+from app.services.compatible import ModelGatewayError, ResponsesClient
 
 
 class DeepSeekError(RuntimeError):
@@ -17,7 +18,17 @@ class DeepSeekClient:
 
     @property
     def configured(self) -> bool:
+        if self.settings.ai_provider.lower() == "openai":
+            return bool(self.settings.openai_api_key.strip())
         return bool(self.settings.deepseek_api_key.strip())
+
+    @property
+    def provider(self) -> str:
+        return "openai-compatible" if self.settings.ai_provider.lower() == "openai" else "deepseek"
+
+    @property
+    def model(self) -> str:
+        return self.settings.openai_model if self.settings.ai_provider.lower() == "openai" else self.settings.deepseek_model
 
     async def generate_json(
         self,
@@ -30,6 +41,14 @@ class DeepSeekClient:
             raise DeepSeekError("DeepSeek is not configured")
 
         started = time.perf_counter()
+        if self.settings.ai_provider.lower() == "openai":
+            try:
+                content = await ResponsesClient(self.settings).complete_async(
+                    [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_prompt}],
+                    max_tokens=max_tokens, json_mode=True)
+                return _parse_json_object(content), round((time.perf_counter() - started) * 1000)
+            except (ModelGatewayError, TypeError, ValueError) as exc:
+                raise DeepSeekError("Compatible model call or JSON validation failed") from exc
         try:
             async with httpx.AsyncClient(timeout=self.settings.deepseek_timeout_seconds) as client:
                 response = await client.post(

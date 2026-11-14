@@ -24,7 +24,7 @@ from app.services.philosophy import (
 
 router = APIRouter(prefix="/portfolio-ai", tags=["portfolio-ai"])
 
-PIPELINE_VERSION = "portfolio-deepseek-gateway-v1.0.0"
+PIPELINE_VERSION = "portfolio-compatible-gateway-v2.0.0"
 WECOM_RULE_VERSION = "wecom-service-demo-1.2.0"
 ACOUSTIC_PIPELINE_VERSION = "acoustic-evidence-v1.2.1"
 # v1.1.0: guard, prompt, validation and fallback now come from app.services.philosophy,
@@ -155,15 +155,16 @@ class PaperRequest(BaseModel):
 async def model_status(request: Request) -> dict[str, Any]:
     _enforce_same_origin(request)
     settings = get_settings()
-    configured = bool(settings.deepseek_api_key.strip())
+    client = DeepSeekClient(settings)
+    configured = client.configured
     with _model_state_lock:
         last_success = _last_model_success_at
     state: Literal["not_configured", "configured", "online"] = (
         "online" if configured and last_success else "configured" if configured else "not_configured"
     )
     return {
-        "provider": "deepseek",
-        "model": settings.deepseek_model,
+        "provider": DeepSeekClient(get_settings()).provider,
+        "model": DeepSeekClient(settings).model,
         "configured": configured,
         "state": state,
         "lastSuccessAt": last_success,
@@ -200,7 +201,7 @@ async def wecom_reply(payload: WeComQuestion, request: Request) -> dict[str, Any
             "liveModel": False,
             "mode": "deterministic-fallback",
             "latencyMs": round((time.perf_counter() - started) * 1000),
-            "fallbackReason": "服务器尚未配置 DeepSeek API Key",
+            "fallbackReason": "服务器尚未配置模型 API Key",
         }
 
     source_payload = [
@@ -224,9 +225,9 @@ async def wecom_reply(payload: WeComQuestion, request: Request) -> dict[str, Any
         return {
             **base,
             "answer": answer,
-            "reason": "规则命中 + DeepSeek 受控生成",
-            "provider": "deepseek",
-            "model": settings.deepseek_model,
+            "reason": "规则命中 + 模型受控生成",
+            "provider": DeepSeekClient(get_settings()).provider,
+            "model": DeepSeekClient(settings).model,
             "liveModel": True,
             "mode": "grounded-generation",
             "latencyMs": latency_ms,
@@ -240,7 +241,7 @@ async def wecom_reply(payload: WeComQuestion, request: Request) -> dict[str, Any
             "liveModel": False,
             "mode": "deterministic-fallback",
             "latencyMs": round((time.perf_counter() - started) * 1000),
-            "fallbackReason": "DeepSeek 暂时不可用，已返回规则结果",
+            "fallbackReason": "模型暂时不可用，已返回规则结果",
         }
 
 
@@ -280,7 +281,7 @@ async def philosophy_reframe(payload: PhilosophyQuestion, request: Request) -> d
     fallback = _deterministic_philosophy(question, payload.density)
     if not client.configured:
         fallback["provenance"]["latencyMs"] = round((time.perf_counter() - started) * 1000)
-        fallback["provenance"]["fallbackReason"] = "服务器尚未配置 DeepSeek API Key"
+        fallback["provenance"]["fallbackReason"] = "服务器尚未配置模型 API Key"
         return fallback
 
     try:
@@ -298,8 +299,8 @@ async def philosophy_reframe(payload: PhilosophyQuestion, request: Request) -> d
             "safety": None,
             "provenance": {
                 "pipelineVersion": PHILOSOPHY_PIPELINE_VERSION,
-                "provider": "deepseek",
-                "model": settings.deepseek_model,
+                "provider": DeepSeekClient(get_settings()).provider,
+                "model": DeepSeekClient(settings).model,
                 "liveModel": True,
                 "mode": "controlled-reframe",
                 "latencyMs": latency_ms,
@@ -326,7 +327,7 @@ async def acoustic_paper(payload: PaperRequest, request: Request) -> dict[str, A
         paper = _deterministic_paper(sources, options)
         paper["provenance"].update({
             "latencyMs": round((time.perf_counter() - started) * 1000),
-            "fallbackReason": "服务器尚未配置 DeepSeek API Key",
+            "fallbackReason": "服务器尚未配置模型 API Key",
         })
         return {"data": paper}
 
@@ -353,7 +354,7 @@ async def acoustic_paper(payload: PaperRequest, request: Request) -> dict[str, A
             user_prompt=_paper_prompt(source_records, options),
             max_tokens=4200,
         )
-        paper = _normalize_model_paper(generated, sources, options, latency_ms, settings.deepseek_model)
+        paper = _normalize_model_paper(generated, sources, options, latency_ms, client.model)
         _mark_model_success()
         return {"data": paper}
     except (DeepSeekError, ValueError):
@@ -588,7 +589,7 @@ def _normalize_model_paper(
     paper["audit"] = _audit_paper(paper, source_count)
     paper["provenance"] = {
         "pipelineVersion": ACOUSTIC_PIPELINE_VERSION,
-        "provider": "deepseek",
+        "provider": DeepSeekClient(get_settings()).provider,
         "model": model,
         "sourceCount": source_count,
         "generatedAt": datetime.now(timezone.utc).isoformat(),

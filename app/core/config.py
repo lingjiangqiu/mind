@@ -17,6 +17,11 @@ class Settings(BaseSettings):
     openai_base_url: str = "https://api.openai.com/v1"
     openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
+    openai_api_style: str = "responses"
+    openai_reasoning_effort: str = "low"
+    openai_timeout_seconds: float = 90.0
+    openai_min_output_tokens: int = 4096
+    openai_max_output_chars: int = 24000
     openai_embedding_model: str = "text-embedding-3-small"
     deepseek_api_key: str = ""
     deepseek_base_url: str = "https://api.deepseek.com/v1"
