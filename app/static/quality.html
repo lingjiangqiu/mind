@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>校园心理助手质量与安全看板</title>
+  <link rel="stylesheet" href="./styles.css?v=company-20260719">
+</head>
+<body class="quality-page">
+  <header class="topbar quality-topbar">
+    <div class="brand"><div class="logo">心</div><div><p class="eyebrow">QUALITY & SAFETY</p><h1>校园心理助手质量看板</h1></div></div>
+    <div class="status-row"><span class="pill ok">REGRESSION PASS</span><a class="ghost quality-back" href="./">返回体验入口</a></div>
+  </header>
+  <main class="quality-shell">
+    <section class="quality-intro">
+      <div><p class="panel-label">ENGINEERING EVIDENCE</p><h2>固定测试结果与安全规则</h2></div>
+      <p>公开快照展示单元测试、六组工程检查、60 条检索案例和四条安全不变量。数据来自固定样例，不读取真实咨询内容，也不代表心理疗效。</p>
+    </section>
+    <section class="quality-metrics" aria-label="评测指标">
+      <div><span>UNIT TESTS</span><strong id="unitTests">-</strong><small>标准库回归</small></div>
+      <div><span>HARNESS</span><strong id="harnesses">-</strong><small>端到端链路</small></div>
+      <div><span>RAG CASES</span><strong id="ragCases">-</strong><small>固定问题集</small></div>
+      <div><span>RECALL@4</span><strong id="ragRecall">-</strong><small>来源召回</small></div>
+      <div><span>MRR</span><strong id="ragMrr">-</strong><small>首个相关结果</small></div>
+    </section>
+    <div class="quality-columns">
+      <section class="quality-surface">
+        <header><p class="panel-label">SAFETY INVARIANTS</p><h2>不可退化的四条规则</h2></header>
+        <div class="quality-table-wrap"><table><thead><tr><th>ID</th><th>不变量</th><th>规则</th><th>期望</th><th>状态</th></tr></thead><tbody id="invariantRows"></tbody></table></div>
+      </section>
+      <section class="quality-surface harness-surface">
+        <header><p class="panel-label">ENGINEERING HARNESS</p><h2>六组链路覆盖</h2></header>
+        <ol id="harnessList"></ol>
+        <div class="rag-detail"><span>NDCG@4</span><strong id="ragNdcg">-</strong><span>HIT RATE</span><strong id="ragHit">-</strong></div>
+      </section>
+    </div>
+    <section class="quality-surface safety-replay">
+      <header><p class="panel-label">SAFETY REVIEW · ROUND 02</p><h2>12 条原始安全场景检查（保留基线）</h2></header>
+      <div class="safety-metrics" aria-label="安全评测指标">
+        <div><span>ROUTE ACCURACY</span><strong id="routeAccuracy">-</strong></div>
+        <div><span>CARD CONTRACT</span><strong id="cardAccuracy">-</strong></div>
+        <div><span>PII REDACTION</span><strong id="piiAccuracy">-</strong></div>
+        <div><span>SAFETY ACTIONS</span><strong id="actionAccuracy">-</strong></div>
+      </div>
+      <div class="quality-table-wrap"><table><thead><tr><th>ID</th><th>场景</th><th>类别</th><th>期望路由</th><th>实际路由</th><th>风险</th><th>卡片</th><th>隐私</th><th>状态</th></tr></thead><tbody id="safetyRows"></tbody></table></div>
+    </section>
+    <section class="quality-surface safety-replay">
+      <header><p class="panel-label">PHILOSOPHY CONTRACT · OFFLINE</p><h2>24 条哲学路径与输出检查</h2></header>
+      <p>合成输入和预设模型输出检查：适用路径、欺凌与哀伤的视角约束、结构完整与不合规输出兜底。不是实时模型质量或心理效果评估。</p>
+      <div class="quality-table-wrap"><table><thead><tr><th>ID</th><th>检查内容</th><th>状态</th></tr></thead><tbody id="philosophyRows"></tbody></table></div>
+    </section>
+    <p id="qualityDisclaimer" class="quality-disclaimer"></p>
+  </main>
+  <script src="./quality.js?v=company-20260719"></script>
+</body>
+</html>

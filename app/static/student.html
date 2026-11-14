@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>聊一聊 · 校园心理助手</title>
+  <meta name="description" content="把困扰慢慢说清楚，找到自己在意的事和可以开始的一小步。支持临时多轮对话。">
+  <link rel="stylesheet" href="./styles.css?v=campus-live-20261111">
+  <link rel="stylesheet" href="./chat.css?v=campus-live-20261111">
+</head>
+<body class="chat-page">
+  <header class="chat-topbar">
+    <a class="chat-brand" href="./"><span class="chat-mark">校</span><span>校园心理助手<small>把心里的事，慢慢说清楚</small></span></a>
+    <nav aria-label="体验导航"><span id="modelState" class="pill warn">正在连接</span><a href="./quality.html">质量记录</a><button id="switchAccount" type="button">退出</button></nav>
+  </header>
+  <main class="chat-layout">
+    <section class="conversation" aria-label="临时对话">
+      <header class="conversation-heading"><div><p class="panel-label">留一点时间，听听自己</p><h1>最近有什么让你放不下？</h1></div><button id="resetChat" class="chat-secondary" type="button">重新开始</button></header>
+      <p class="chat-boundary">AI 演示原型，没有真人监看或跟进。请用虚构或去掉身份信息的情境体验。</p>
+      <div id="chatMessages" class="chat-messages" role="log" aria-label="对话内容" aria-relevant="additions">
+        <article class="chat-message assistant welcome"><span class="speaker">校园心理助手</span><div class="message-text">不必一次说完整。可以从一件具体的小事开始：发生了什么，你现在是什么感觉？</div></article>
+      </div>
+      <div class="chat-examples" aria-label="试试一个示例">
+        <button type="button" data-example="我怕考试挂科，复习任务太多，完全不知道从哪里开始。">复习任务堆在一起</button>
+        <button type="button" data-example="和室友吵架以后，我一直觉得自己不被尊重。">和室友闹了矛盾</button>
+        <button type="button" data-example="越担心今晚睡不着，我就越清醒。">越想睡越清醒</button>
+        <button type="button" data-example="我不想活了，想结束生命。">查看安全支持示例</button>
+      </div>
+      <form id="chatForm" class="chat-composer">
+        <label for="chatInput">你想聊的事情</label>
+        <textarea id="chatInput" rows="3" maxlength="1000" placeholder="例如：我已经开始复习了，但还是一直担心结果……" required aria-describedby="privacyHint chatState"></textarea>
+        <div class="composer-actions"><span id="turnState">本次最多 10 轮 · 30 分钟内有效</span><button id="sendChat" class="primary" type="submit">发送</button></div>
+      </form>
+      <p id="chatState" class="chat-status" role="status" aria-live="polite">可以接着上一轮追问，也可以选择上面的示例。</p>
+      <p id="privacyHint" class="chat-privacy">对话仅在服务器临时内存中保留，到期清理；刷新页面后不恢复聊天内容。输入会经过手机号、邮箱、身份证号脱敏，再发送至第三方 AI（DeepSeek），脱敏不能覆盖所有个人信息。不会生成个人报告或发送预警。每个网络每小时最多 20 次。</p>
+    </section>
+    <aside class="chat-sidebar">
+      <details class="trace-panel" open>
+        <summary>这次回应如何产生<span>处理过程</span></summary>
+        <p class="trace-description">这里展示实际执行的步骤和结果；你也可以点击之前回应下方的“查看这轮过程”。</p>
+        <div id="traceMeta" class="trace-meta">发送一条消息后查看</div>
+        <ol id="traceSteps" class="trace-steps"><li class="trace-empty">先听你说，再决定怎样回应。</li></ol>
+        <p class="trace-footnote">仅展示处理记录，不展示模型的内部思考。哲学视角用于表达整理，不能代替专业支持。</p>
+      </details>
+      <section class="support-panel" aria-label="现实中的支持"><p class="panel-label">需要身边的人时</p><h2>让支持走出屏幕</h2><p>可以找可信任的朋友、辅导员或学校心理中心。这里不会替你联系他们。</p><p>若你或他人正面临即时危险，请立即联系当地紧急服务；中国大陆可拨打 <a href="tel:110">110</a> 或 <a href="tel:120">120</a>。</p></section>
+      <a class="chat-case-link" href="../project-mindbridge.html">了解这个项目 →</a>
+    </aside>
+  </main>
+  <script src="./student.js?v=campus-live-20261111"></script>
+</body>
+</html>

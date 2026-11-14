@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>校园心理助手公开体验</title>
+  <meta name="description" content="校园困扰的临时多轮 AI 体验：把感受说清楚，看见在意的事、可控的选择和下一步。">
+  <link rel="stylesheet" href="./styles.css?v=company-20260719">
+</head>
+<body class="portal-page">
+  <header class="topbar portal-topbar">
+    <div class="brand">
+      <div class="logo">校</div>
+      <div>
+        <p class="eyebrow">CAMPUS SUPPORT ASSISTANT</p>
+        <h1>校园心理助手</h1>
+      </div>
+    </div>
+    <div class="status-row">
+      <span id="serviceState" class="pill warn">连接中</span>
+      <span class="pill">隐私脱敏</span>
+      <span class="pill">风险硬规则</span>
+      <a class="ghost quality-back" href="../project-mindbridge.html">返回项目案例</a>
+    </div>
+  </header>
+
+  <main class="portal-shell">
+    <section class="portal-visual" aria-label="校园学习场景">
+      <img src="./assets/mindbridge-campus-companion.png" alt="学生在校园空间记录自己的感受">
+      <div class="portal-visual-copy">
+        <p class="panel-label">CAMPUS COMPANION</p>
+        <h2>从心里的一团乱，到可以开始的一小步</h2>
+        <p>把事情、感受和担心慢慢分开。可以连续追问，也可以先试一个校园情境；涉及安全时，优先找到现实中的支持。</p>
+      </div>
+    </section>
+
+    <section class="access-stack">
+      <section class="login-panel demo-access">
+        <p class="panel-label">PORTFOLIO DEMO</p>
+        <h2>进入校园心理助手</h2>
+        <form id="demoForm" class="login-form">
+          <label>
+            <span>三位体验码（已填入）</span>
+            <input id="accessCode" inputmode="numeric" maxlength="3" autocomplete="off" value="777" readonly aria-describedby="demoState">
+          </label>
+          <button class="primary full" type="submit">进入校园心理助手</button>
+          <p id="demoState" class="hint">临时 AI 对话，30 分钟内有效，最多 10 轮。请使用虚构或去掉身份信息的情境；输入经基础脱敏后发送给第三方 AI（DeepSeek），不保存为个人报告。</p>
+        </form>
+      </section>
+
+      <a class="quality-link" href="./quality.html">
+        <span>QUALITY BOARD</span>
+        <strong>查看体验质量与安全设计</strong>
+      </a>
+
+      <p class="safety-boundary">AI 演示原型，没有真人监看或跟进，不提供医疗诊断或急救。高风险表达会跳过哲学解释。遇到即时危险请联系当地紧急服务；中国大陆可拨打 110 / 120。</p>
+    </section>
+  </main>
+
+  <script src="./app.js?v=company-20260719"></script>
+</body>
+</html>
